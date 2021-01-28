@@ -10,26 +10,21 @@ import { AccountService } from './services/account.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'AnimaLove';
-  users: any;
 
-  constructor(private http: HttpClient, private accountService: AccountService){}
+  title = 'AnimaLove';
+
+  constructor(private accountService: AccountService){}
 
   ngOnInit(): void{
-     this.getUsers();
      this.setCurrentUser();
   }
 
   setCurrentUser(): void{
-    const user: User = JSON.parse(localStorage.getItem('user') || '');
+    const userLocalStorage = localStorage.getItem('user') || '';
+    let user: User | null = null;
+    if (!!userLocalStorage){
+      user = JSON.parse(userLocalStorage);
+    }
     this.accountService.setCurrentUser(user);
-  }
-
-  getUsers(): void{
-    this.http.get('https://localhost:5001/api/users').subscribe(users => {
-      this.users = users;
-    }, error => {
-      console.error(error);
-    });
   }
 }
