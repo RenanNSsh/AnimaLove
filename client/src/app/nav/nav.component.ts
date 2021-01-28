@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { fakeAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -12,6 +13,7 @@ import { AccountService } from '../services/account.service';
 })
 export class NavComponent implements OnInit {
 
+  debugMode = false;
   user: any = {};
   currentUser$: Observable<User | null> = new Observable<User>();
 
@@ -23,9 +25,6 @@ export class NavComponent implements OnInit {
   login(): void{
     this.accountService.login(this.user).subscribe(response => {
       this.router.navigateByUrl('/members');
-    }, error => {
-      console.error(error);
-      this.toastr.error(error.error);
     });
   }
 
